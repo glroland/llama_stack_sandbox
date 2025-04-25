@@ -24,14 +24,16 @@ def main():
     agent = Agent(
         llama_stack_client,
         model=llama_stack_model,
-        instructions="",
+        instructions="You are a helpful assistance",
 #        tools=["builtin::websearch"],
 #        input_shields=available_shields,
 #        output_shields=available_shields,
         enable_session_persistence=False,
-    )
+        sampling_params={
+            "strategy": {"type": "top_p", "temperature": 1.0, "top_p": 0.9},
+            },    
+        )
     user_prompts = [
-        "Hello",
         "What are the capitals of each major european country?",
     ]
 
