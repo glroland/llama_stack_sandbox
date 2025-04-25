@@ -24,7 +24,7 @@ def main():
     # find model matching name
     print ("Finding Requested LLama Model...")
     llama_stack_model = None
-    for model in llama_stack_client.client.models.list():
+    for model in llama_stack_client.models.list():
         if model.identifier == llama_stack_model_name:
             llama_stack_model = model
             break
