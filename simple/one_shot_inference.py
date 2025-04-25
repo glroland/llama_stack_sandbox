@@ -1,5 +1,6 @@
 import os
-from llama_stack_client import LlamaStackClient, Agent, AgentEventLogger
+from llama_stack_client import LlamaStackClient, Agent, AgentEventLogger, LlamaStackClient
+from llama_stack_client.types import UserMessage
 
 ENV_LLAMA_STACK_HOST = "LLAMA_STACK_HOST"
 ENV_LLAMA_STACK_PORT = "LLAMA_STACK_PORT"
@@ -32,36 +33,31 @@ def main():
         print("Model Not Found!")
         return
 
-    agent = Agent(
-        llama_stack_client,
-        model=llama_stack_model,
-        instructions="You are a helpful assistance",
-#        tools=["builtin::websearch"],
-#        input_shields=available_shields,
-#        output_shields=available_shields,
-        enable_session_persistence=False,
-#        sampling_params={
-#            "strategy": {"type": "top_p", "temperature": 1.0, "top_p": 0.9},
-#            },    
-        )
     user_prompts = [
         "What are the capitals of each major european country?",
+        "hello world, write me a 2 sentence poem about the moon",
     ]
 
-    session_id = agent.create_session("test-session")
+    # send chat completion request
+    print ("Sending chat completion request...")
     for prompt in user_prompts:
-        print(f"User> {prompt}")
-        response = agent.create_turn(
-            messages=[{"role": "user", "content": prompt}],
-            session_id=session_id,
+        print ("User> ", prompt)
+        response = llama_stack_client.inference.chat_completion(
+            messages=[
+                UserMessage(
+                    content=prompt,
+                    role="user",
+                ),
+            ],
+            model_id=llama_stack_model.identifier,
+            stream=False,
         )
-
-        for log in AgentEventLogger().log(response):
-            log.print()
-
+        #print (response)
+        print (response.completion_message.content)
 
 
-    pass
 
 if __name__ == "__main__":
     main()
+
+
