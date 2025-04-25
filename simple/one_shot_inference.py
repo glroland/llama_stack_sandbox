@@ -40,9 +40,9 @@ def main():
 #        input_shields=available_shields,
 #        output_shields=available_shields,
         enable_session_persistence=False,
-        sampling_params={
-            "strategy": {"type": "top_p", "temperature": 1.0, "top_p": 0.9},
-            },    
+#        sampling_params={
+#            "strategy": {"type": "top_p", "temperature": 1.0, "top_p": 0.9},
+#            },    
         )
     user_prompts = [
         "What are the capitals of each major european country?",
