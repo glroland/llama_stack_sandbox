@@ -1,4 +1,6 @@
 pytest
 pylint
-pydantic==2.10.6
 llama-stack-client
+llama-stack
+huggingface_hub[cli]
+
