@@ -11,8 +11,8 @@ def main():
     llama_stack_port = os.environ[ENV_LLAMA_STACK_PORT]
     llama_stack_url = f"http://{llama_stack_host}:{llama_stack_port}"
     print ("LLama Stack URL: ", llama_stack_url)
-    llama_stack_model = os.environ[ENV_LLAMA_STACK_MODEL]
-    print ("LLama Stack Model: ", llama_stack_model)
+    llama_stack_model_name = os.environ[ENV_LLAMA_STACK_MODEL]
+    print ("LLama Stack Model: ", llama_stack_model_name)
 
     # connect to llama stack environment
     print ("Connecting to Llama Stack....")
@@ -20,6 +20,17 @@ def main():
         base_url=llama_stack_url,
     )
     print ("Connected")
+
+    # find model matching name
+    print ("Finding Requested LLama Model...")
+    llama_stack_model = None
+    for model in llama_stack_client.models():
+        if model.identifier == llama_stack_model_name:
+            llama_stack_model = model
+            break
+    if llama_stack_model is None:
+        print("Model Not Found!")
+        return
 
     agent = Agent(
         llama_stack_client,
