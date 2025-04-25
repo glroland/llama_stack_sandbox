@@ -1,5 +1,5 @@
 import os
-from llama_stack_client import LlamaStackClient, Agent, AgentEventLogger, LlamaStackClient
+from llama_stack_client import LlamaStackClient, LlamaStackClient
 from llama_stack_client.types import UserMessage
 
 ENV_LLAMA_STACK_HOST = "LLAMA_STACK_HOST"
