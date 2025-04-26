@@ -1,7 +1,5 @@
 import os
 from llama_stack_client import LlamaStackClient, LlamaStackClient, Agent, AgentEventLogger
-from llama_stack.apis.inference import UserMessage
-from llama_stack.apis.common.content_types import ContentDelta, InterleavedContent, InterleavedContentItem, TextContentItem
 
 ENV_LLAMA_STACK_HOST = "LLAMA_STACK_HOST"
 ENV_LLAMA_STACK_PORT = "LLAMA_STACK_PORT"
@@ -54,20 +52,11 @@ def main():
     print ("Sending agent requests...")
     for prompt in user_prompts:
     
-        # Setup message
-        user_message = UserMessage()
-        user_message.role = "user"
-
-        text = TextContentItem()
-        text.text = prompt
-
-        user_message.content = text
-
-
-        # Non-streaming API
+        # Send request
         response = agent.create_turn(
             session_id=session_id,
-            messages=[user_message],
+            messages=[{"role":"user", "content":prompt}],
+            stream=True
         )
         for log in AgentEventLogger().log(response):
             log.print()
