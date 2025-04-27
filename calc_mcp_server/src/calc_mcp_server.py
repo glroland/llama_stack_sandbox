@@ -1,6 +1,8 @@
 from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP("Calculator")
+mcp.settings.host = "0.0.0.0"
+mcp.settings.port = 8080
 
 @mcp.tool()
 def calculator(x: float, y: float, operation: str) -> dict:
@@ -39,3 +41,6 @@ def add(a: int, b: int) -> int:
 def get_greeting(name: str) -> str:
     """Get a personalized greeting"""
     return f"Hello, {name}!"
+
+if __name__ == "__main__":
+    mcp.run()

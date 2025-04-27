@@ -38,7 +38,7 @@ def main():
     llama_stack_client.toolgroups.register(
         toolgroup_id="calculator",
         provider_id="model-context-protocol",
-        mcp_endpoint={"uri": "http://rack:3001/sse"},
+        mcp_endpoint={"uri": "https://m1-calc-mcp-server-llama.apps.ocp.home.glroland.com/sse"},
     )
 
     # Create the agent

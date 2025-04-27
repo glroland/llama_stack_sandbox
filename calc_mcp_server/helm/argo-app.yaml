@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: calc-mcp-server
+spec:
+  destination:
+    name: ''
+    namespace: llama
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: 'calc-mcp-server/helm'
+    repoURL: 'https://github.com/glroland/llama_stack_sandbox.git'
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
