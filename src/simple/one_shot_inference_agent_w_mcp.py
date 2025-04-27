@@ -35,11 +35,11 @@ def main():
         return
 
     # add MCP server
-    llama_stack_client.toolgroups.register(
-        toolgroup_id="calculator",
-        provider_id="model-context-protocol",
-        mcp_endpoint={"uri": "https://m1-calc-mcp-server-llama.apps.ocp.home.glroland.com/sse"},
-    )
+#    llama_stack_client.toolgroups.register(
+#        toolgroup_id="calculator",
+#        provider_id="model-context-protocol",
+#        mcp_endpoint={"uri": "https://m1-calc-mcp-server-llama.apps.ocp.home.glroland.com/sse"},
+#    )
 
     # Create the agent
     agent = Agent(

@@ -9,7 +9,7 @@ serviceAccount:
 image:
   repository: registry.home.glroland.com/llama/
   name: calc-mcp-server
-  tag: 8
+  tag: 10
   usePullSecret: true
   pullPolicy: IfNotPresent
   port: 8080

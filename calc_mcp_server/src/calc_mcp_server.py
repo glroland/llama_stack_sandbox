@@ -1,8 +1,7 @@
 from mcp.server.fastmcp import FastMCP
+import uvicorn
 
 mcp = FastMCP("Calculator")
-mcp.settings.host = "0.0.0.0"
-mcp.settings.port = 8080
 
 @mcp.tool()
 def calculator(x: float, y: float, operation: str) -> dict:
@@ -43,4 +42,4 @@ def get_greeting(name: str) -> str:
     return f"Hello, {name}!"
 
 if __name__ == "__main__":
-    mcp.run()
+    uvicorn.run(mcp.sse_app(), host="0.0.0.0", port=8080)
