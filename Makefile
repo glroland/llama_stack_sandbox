@@ -3,7 +3,7 @@ LLAMA_STACK_PORT := 8321
 LLAMA_STACK_MODEL := meta-llama/Llama-3.2-11B-Vision-Instruct
 
 MCP_IMAGE := registry.home.glroland.com/llama/calc-mcp-server
-MCP_IMAGE_TAG := 3
+MCP_IMAGE_TAG := 8
 
 install:
 	pip install -r requirements.txt

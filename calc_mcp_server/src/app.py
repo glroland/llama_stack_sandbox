@@ -18,7 +18,10 @@ def main(port: int, transport: str) -> int:
     app = Server("calc")
 
     @app.call_tool()
-    async def calculator_tool(name: str, arguments: dict) -> types.TextContent:
+    async def calculator_tool(name: str, arguments: dict) -> \
+                list[types.TextContent | types.ImageContent | types.EmbeddedResource]:
+        print ("Calculator Tool Invoked.  Name=", name, " Args=", arguments)
+    
         if name != "calculator":
             raise ValueError(f"Unknown tool: {name}")
 
@@ -34,10 +37,12 @@ def main(port: int, transport: str) -> int:
             raise ValueError("Missing required argument 'operation'")
         operation = arguments["operation"]
 
+        print ("Calling operational function now...")
         return await calculator(x, y, operation)
 
     @app.list_tools()
     async def list_tools() -> list[types.Tool]:
+        print ("List Tools invoked...")
         return [
             types.Tool(
                 name="calculator",
