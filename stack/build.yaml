@@ -1,7 +1,7 @@
 version: '2'
 distribution_spec:
   description: Use Meta Reference for running LLM inference
-  container_image: my-llama-stack
+  container_image: null
   providers:
     inference:
     - inline::meta-reference
