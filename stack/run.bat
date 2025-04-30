@@ -1,7 +1,7 @@
 @echo off
 
 set LLAMA_PATH=C:\Users\glrol\.llama
-set DISTRO=llamastack/distribution-meta-reference-gpu:latest
+set DISTRO=registry.home.glroland.com/llama/stack:1
 set LLAMA_STACK_PORT=8321
 rem set LLAMA_MODEL=meta-llama/Llama-3.1-8B-Instruct
 set LLAMA_MODEL=meta-llama/Llama-3.2-11B-Vision-Instruct
