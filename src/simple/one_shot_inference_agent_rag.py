@@ -4,6 +4,7 @@ from llama_stack_client import LlamaStackClient, LlamaStackClient, Agent, AgentE
 ENV_LLAMA_STACK_HOST = "LLAMA_STACK_HOST"
 ENV_LLAMA_STACK_PORT = "LLAMA_STACK_PORT"
 ENV_LLAMA_STACK_MODEL = "LLAMA_STACK_MODEL"
+ENV_EMBEDDING_MODEL = "EMBEDDING_MODEL"
 
 def main():
     # gather configuration
@@ -13,6 +14,8 @@ def main():
     print ("LLama Stack URL: ", llama_stack_url)
     llama_stack_model_name = os.environ[ENV_LLAMA_STACK_MODEL]
     print ("LLama Stack Model: ", llama_stack_model_name)
+    embedding_model_name = os.environ[ENV_EMBEDDING_MODEL]
+    print ("Embedding Model: ", embedding_model_name)
 
     # connect to llama stack environment
     print ("Connecting to Llama Stack....")
@@ -22,7 +25,7 @@ def main():
     print ("Connected")
 
     # find model matching name
-    print ("Finding Requested LLama Model...")
+    print ("Finding Requested LLama Model...", llama_stack_client.models.list())
     llama_stack_model = None
     for model in llama_stack_client.models.list():
         if model.identifier == llama_stack_model_name:
@@ -44,9 +47,9 @@ def main():
     # Register a vector database
     llama_stack_client.vector_dbs.register(
         vector_db_id="one_shot_inference_agent_rag",
-        embedding_model="all-mpnet-base-v2",
+        embedding_model=embedding_model_name,
         embedding_dimension=384,
-        provider_id="remote::milvus",
+        provider_id="milvus",
     )
 
     # Create the agent
