@@ -6,9 +6,10 @@ set LLAMA_STACK_PORT=8321
 rem set LLAMA_MODEL=meta-llama/Llama-3.1-8B-Instruct
 set LLAMA_MODEL=meta-llama/Llama-3.2-11B-Vision-Instruct
 
-docker pull %DISTRO%
+rem docker pull %DISTRO%
 
-docker run --rm --gpus all -d -p %LLAMA_STACK_PORT%:%LLAMA_STACK_PORT% -v %LLAMA_PATH%:/root/.llama %DISTRO% --port %LLAMA_STACK_PORT% --env INFERENCE_MODEL=%LLAMA_MODEL%
+rem docker run --rm --gpus all -d -p %LLAMA_STACK_PORT%:%LLAMA_STACK_PORT% -v %LLAMA_PATH%:/root/.llama %DISTRO% --port %LLAMA_STACK_PORT% --env INFERENCE_MODEL=%LLAMA_MODEL%
+docker run --gpus all -d -p %LLAMA_STACK_PORT%:%LLAMA_STACK_PORT% -v %LLAMA_PATH%:/root/.llama %DISTRO% --port %LLAMA_STACK_PORT% --env INFERENCE_MODEL=%LLAMA_MODEL% --env LLAMA_STACK_LOGGING=server=debug;core=info --env MILVUS_ENDPOINT=http://db.home.glroland.com:19530 --env MILVUS_TOKEN=root:Milvus
 
 rem docker run --gpus all -it -p %LLAMA_STACK_PORT%:%LLAMA_STACK_PORT% -v %LLAMA_PATH%:/root/.llama %DISTRO% --port %LLAMA_STACK_PORT% --env INFERENCE_MODEL=%LLAMA_MODEL%
 
