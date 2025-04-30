@@ -9,7 +9,7 @@ set EMBEDDING_MODEL=sentence-transformers/all-mpnet-base-v2
 rem docker pull %DISTRO%
 
 rem docker run --rm --gpus all -d -p %LLAMA_STACK_PORT%:%LLAMA_STACK_PORT% -v %LLAMA_PATH%:/root/.llama %DISTRO% --port %LLAMA_STACK_PORT% --env INFERENCE_MODEL=%LLAMA_MODEL%
-docker run --gpus all -d -p %LLAMA_STACK_PORT%:%LLAMA_STACK_PORT% -v %LLAMA_PATH%:/root/.llama %DISTRO% --port %LLAMA_STACK_PORT% --env INFERENCE_MODEL=%LLAMA_MODEL% --env EMBEDDING_MODEL=%EMBEDDING_MODEL% --env INFERENCE_CHECKPOINT_DIR=/root/.llama/checkpoints --env MILVUS_ENDPOINT=http://db.home.glroland.com:19530 --env MILVUS_TOKEN=root:Milvus
+docker run --gpus all -d -p %LLAMA_STACK_PORT%:%LLAMA_STACK_PORT% -v %LLAMA_PATH%:/root/.llama %DISTRO% --port %LLAMA_STACK_PORT% --env INFERENCE_MODEL=%LLAMA_MODEL% --env EMBEDDING_MODEL=%EMBEDDING_MODEL% --env MILVUS_ENDPOINT=http://db.home.glroland.com:19530 --env MILVUS_TOKEN=root:Milvus
 
 rem docker run --gpus all -it -p %LLAMA_STACK_PORT%:%LLAMA_STACK_PORT% -v %LLAMA_PATH%:/root/.llama %DISTRO% --port %LLAMA_STACK_PORT% --env INFERENCE_MODEL=%LLAMA_MODEL%
 

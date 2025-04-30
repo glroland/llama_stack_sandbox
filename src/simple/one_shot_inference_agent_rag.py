@@ -44,7 +44,7 @@ def main():
     # Register a vector database
     llama_stack_client.vector_dbs.register(
         vector_db_id="one_shot_inference_agent_rag",
-        embedding_model="all-MiniLM-L6-v2",
+        embedding_model="all-mpnet-base-v2",
         embedding_dimension=384,
         provider_id="remote::milvus",
     )
