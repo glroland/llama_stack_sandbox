@@ -1,10 +1,14 @@
 import os
-from llama_stack_client import LlamaStackClient, LlamaStackClient, Agent, AgentEventLogger
+import requests
+from llama_stack_client import LlamaStackClient, LlamaStackClient, Agent, AgentEventLogger, RAGDocument
 
 ENV_LLAMA_STACK_HOST = "LLAMA_STACK_HOST"
 ENV_LLAMA_STACK_PORT = "LLAMA_STACK_PORT"
 ENV_LLAMA_STACK_MODEL = "LLAMA_STACK_MODEL"
 ENV_EMBEDDING_MODEL = "EMBEDDING_MODEL"
+
+def chunk_array(arr, chunk_size):
+    return [arr[i:i + chunk_size] for i in range(0, len(arr), chunk_size)]
 
 def main():
     # gather configuration
@@ -45,8 +49,9 @@ def main():
     print ("Registered Vector Databases: ", vector_providers)
 
     # Register a vector database
+    vector_db_id = "one_shot_inference_agent_rag"
     llama_stack_client.vector_dbs.register(
-        vector_db_id="one_shot_inference_agent_rag",
+        vector_db_id=vector_db_id,
         embedding_model=embedding_model_name,
         embedding_dimension=384,
         provider_id="milvus",
@@ -63,23 +68,65 @@ def main():
     # Create a session
     session_id = agent.create_session(session_name="My conversation")
 
+    # download dictionary file
+    dictionary_file = "../../content/Oxford English Dictionary.txt"
+    if not os.path.isfile(dictionary_file):
+        raise ValueError("Dictionary file not found!")
+
+    # load file
+    print ("Reading dictionary file...")
+    dictionary_data = None
+    with open(dictionary_file, "r") as file:
+        dictionary_data = str(file.read())
+    print ("Done")
+    if dictionary_data is None:
+        raise ValueError("No dictionary data found!")
+
+    # splitting lines into groups
+    print ("Creating groups of dictionary entries from data set...")
+    dictionary_lines = dictionary_data.splitlines()
+    dictionary_groups = chunk_array(dictionary_lines, 1000)
+    print ("Done")
+
+    # Chunk it by line
+    print ("Chunking content...")
+    chunks = []
+    document_id = 0
+    for group in dictionary_groups:
+        content = "".join(group)
+        document_id += 1
+        if len(content) > 0:
+            chunk = {
+                "content": content,
+                "mime_type": "text/plain",
+                "metadata": {
+                    "document_id": f"doc_{document_id}",
+                },
+            }
+            chunks.append(chunk)
+    print ("Done")
+
+    # Import content
+    print ("Importing dictionary content into database...")
+    llama_stack_client.vector_io.insert(vector_db_id=vector_db_id, chunks=chunks)
+    print ("Done")
+
     user_prompts = [
-        "What are the capitals of each major european country?",
-        "hello world, write me a 2 sentence poem about the moon",
+        "What is a basketball?",
+        "How many legs does an arachnid have?",
     ]
 
-    # send chat completion request
+    # send RAG inquiries
     print ("Sending agent requests...")
-    for prompt in user_prompts:
-    
-        # Send request
-        response = agent.create_turn(
-            session_id=session_id,
-            messages=[{"role":"user", "content":prompt}],
-            stream=True
+    for user_prompt in user_prompts:
+
+        # Query documents
+        results = llama_stack_client.tool_runtime.rag_tool.query(
+            vector_db_ids=[vector_db_id],
+            content=user_prompt,
         )
-        for log in AgentEventLogger().log(response):
-            log.print()
+        print (results)
+
 
 if __name__ == "__main__":
     main()
