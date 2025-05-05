@@ -2,8 +2,7 @@ import os
 import requests
 from llama_stack_client import LlamaStackClient, LlamaStackClient, Agent, AgentEventLogger, RAGDocument
 
-ENV_LLAMA_STACK_HOST = "LLAMA_STACK_HOST"
-ENV_LLAMA_STACK_PORT = "LLAMA_STACK_PORT"
+ENV_LLAMA_STACK_URL = "LLAMA_STACK_URL"
 ENV_LLAMA_STACK_MODEL = "LLAMA_STACK_MODEL"
 ENV_EMBEDDING_MODEL = "EMBEDDING_MODEL"
 
@@ -12,9 +11,7 @@ def chunk_array(arr, chunk_size):
 
 def main():
     # gather configuration
-    llama_stack_host = os.environ[ENV_LLAMA_STACK_HOST]
-    llama_stack_port = os.environ[ENV_LLAMA_STACK_PORT]
-    llama_stack_url = f"http://{llama_stack_host}:{llama_stack_port}"
+    llama_stack_url = os.environ[ENV_LLAMA_STACK_URL]
     print ("LLama Stack URL: ", llama_stack_url)
     llama_stack_model_name = os.environ[ENV_LLAMA_STACK_MODEL]
     print ("LLama Stack Model: ", llama_stack_model_name)
@@ -85,7 +82,7 @@ def main():
     # splitting lines into groups
     print ("Creating groups of dictionary entries from data set...")
     dictionary_lines = dictionary_data.splitlines()
-    dictionary_groups = chunk_array(dictionary_lines, 1000)
+    dictionary_groups = chunk_array(dictionary_lines, 800)
     print ("Done")
 
     # Chunk it by line
