@@ -1,4 +1,5 @@
 LLAMA_STACK_URL := https://my-llama-stack-my-llama-stack.apps.ocp.home.glroland.com
+#LLAMA_STACK_URL := https://o1-ollama-llama-stack-ollama-llama.apps.ocp.home.glroland.com
 LLAMA_STACK_MODEL := meta-llama/Llama-3.2-11B-Vision-Instruct
 EMBEDDING_MODEL := all-MiniLM-L6-v2
 
