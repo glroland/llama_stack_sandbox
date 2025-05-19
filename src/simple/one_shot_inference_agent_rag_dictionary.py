@@ -1,7 +1,8 @@
 import os
 import requests
 import uuid
-from llama_stack_client import LlamaStackClient, LlamaStackClient, Agent, AgentEventLogger, RAGDocument
+from llama_stack_client import LlamaStackClient, LlamaStackClient, Agent, RAGDocument
+from llama_stack_client.types.shared_params.query_config import QueryConfig
 
 ENV_LLAMA_STACK_URL = "LLAMA_STACK_URL"
 ENV_LLAMA_STACK_MODEL = "LLAMA_STACK_MODEL"
@@ -88,26 +89,44 @@ def main():
 
     # Chunk it by line
     print ("Chunking content...")
-    chunks = []
-    document_id = 0
-    for group in dictionary_groups:
-        content = "".join(group)
-        document_id += 1
-        if len(content) > 0:
-            chunk = {
-                "content": content,
-                "mime_type": "text/plain",
-                "metadata": {
-                    "document_id": f"doc_{document_id}",
-                    "token_count": token_count,
-                },
-            }
-            chunks.append(chunk)
-    print ("Done")
+#    chunks = []
+#    document_id = 0
+#    for group in dictionary_groups:
+#        content = "".join(group)
+#        document_id += 1
+#        if len(content) > 0:
+#            chunk = {
+#                "content": content,
+#                "mime_type": "text/plain",
+#                "metadata": {
+#                    "document_id": f"doc_{document_id}",
+#                    "token_count": token_count,
+#                },
+#            }
+#            chunks.append(chunk)
+    documents = [
+        RAGDocument(
+            document_id=f"num-{i}",
+            content=f"{chunk}",
+            mime_type="text/plain",
+            metadata={},
+        )
+        for i, chunk in enumerate(dictionary_groups)
+    ]
+    print ("Done.  # of documents is", len(documents))
+
+    # Trim content
+    if len(documents) > 10:
+        print ("Trimming list of documents to 10.")
+        documents = documents[:10]
 
     # Import content
     print ("Importing dictionary content into database...")
-    llama_stack_client.vector_io.insert(vector_db_id=vector_db_id, chunks=chunks)
+    llama_stack_client.tool_runtime.rag_tool.insert(
+        documents=documents,
+        vector_db_id=vector_db_id,
+        chunk_size_in_tokens=512,
+    )
     print ("Done")
 
     user_prompts = [
@@ -119,12 +138,32 @@ def main():
     print ("Sending agent requests...")
     for user_prompt in user_prompts:
 
+        print ("PROMPT: ", user_prompt)
+        print ()
+
         # Query documents
-        results = llama_stack_client.tool_runtime.rag_tool.query(
+        query_config = QueryConfig(max_chunks=1)
+        metadata, content = llama_stack_client.tool_runtime.rag_tool.query(
             vector_db_ids=[vector_db_id],
             content=user_prompt,
+            query_config=query_config
         )
-        print (results)
+
+        # Parse metadata
+        metadata = metadata[1]
+        document_ids = metadata["document_ids"]
+        print ("RESULT: ", document_ids)
+        print()
+
+        # Parse content
+        content = content[1]
+        for result in content:
+            print (result.text)
+            print()
+
+        # Display Results
+        print ("-------------------------------------------------------------------")
+        print ()
 
 
 if __name__ == "__main__":
