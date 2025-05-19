@@ -9,8 +9,11 @@ MCP_IMAGE_TAG := 10
 install:
 	pip install -r requirements.txt
 
-run:
-	cd src/simple && LLAMA_STACK_URL=$(LLAMA_STACK_URL) LLAMA_STACK_MODEL=$(LLAMA_STACK_MODEL) EMBEDDING_MODEL=$(EMBEDDING_MODEL) python one_shot_inference_agent_rag.py
+run1:
+	cd src/simple && LLAMA_STACK_URL=$(LLAMA_STACK_URL) LLAMA_STACK_MODEL=$(LLAMA_STACK_MODEL) EMBEDDING_MODEL=$(EMBEDDING_MODEL) python one_shot_inference_agent_rag_dictionary.py
+
+run2:
+	cd src/simple && LLAMA_STACK_URL=$(LLAMA_STACK_URL) LLAMA_STACK_MODEL=$(LLAMA_STACK_MODEL) EMBEDDING_MODEL=$(EMBEDDING_MODEL) python one_shot_inference_agent_rag_techdocs.py
 
 run.all:
 	cd src/simple && LLAMA_STACK_URL=$(LLAMA_STACK_URL) LLAMA_STACK_MODEL=$(LLAMA_STACK_MODEL) EMBEDDING_MODEL=$(EMBEDDING_MODEL) python one_shot_inference_cc.py

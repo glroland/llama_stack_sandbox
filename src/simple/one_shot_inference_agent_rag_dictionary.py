@@ -1,5 +1,6 @@
 import os
 import requests
+import uuid
 from llama_stack_client import LlamaStackClient, LlamaStackClient, Agent, AgentEventLogger, RAGDocument
 
 ENV_LLAMA_STACK_URL = "LLAMA_STACK_URL"
@@ -51,7 +52,7 @@ def main():
         vector_db_id=vector_db_id,
         embedding_model=embedding_model_name,
         embedding_dimension=384,
-        provider_id="milvus",
+        provider_id="faiss",
     )
 
     # Create the agent
@@ -98,6 +99,7 @@ def main():
                 "mime_type": "text/plain",
                 "metadata": {
                     "document_id": f"doc_{document_id}",
+                    "token_count": token_count,
                 },
             }
             chunks.append(chunk)
