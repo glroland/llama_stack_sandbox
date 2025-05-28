@@ -1,7 +1,7 @@
 @echo off
 
 set LLAMA_PATH=C:\Users\glrol\.llama
-set DISTRO=registry.home.glroland.com/llama/stack:1
+set DISTRO=llamastack/distribution-meta-reference-gpu:0.2.8
 set LLAMA_STACK_PORT=8321
 set LLAMA_MODEL=meta-llama/Llama-3.2-11B-Vision-Instruct
 set EMBEDDING_MODEL=sentence-transformers/all-mpnet-base-v2
